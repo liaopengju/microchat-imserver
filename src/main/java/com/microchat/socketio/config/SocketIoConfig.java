@@ -2,7 +2,6 @@ package com.microchat.socketio.config;
 
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.DataListener;
 import com.microchat.socketio.enums.NameSpaceEnum;
 import com.microchat.socketio.handler.MessageEventHandler;
 import com.microchat.socketio.listener.AuthorizationListenerImpl;
