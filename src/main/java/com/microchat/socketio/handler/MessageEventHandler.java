@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import com.microchat.client.NettyClients;
 import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
@@ -17,6 +18,7 @@ import com.microchat.socketio.messages.StatusNoticeMessage;
  * @since 2019年03月14日
  */
 public class MessageEventHandler {
+
     /** IM 服务对象 */
     protected SocketIOServer server;
 
@@ -31,7 +33,10 @@ public class MessageEventHandler {
      */
     @OnConnect
     public void onConnect(SocketIOClient client) {
-        System.out.println("连接开始");
+
+
+
+
     }
 
     /**

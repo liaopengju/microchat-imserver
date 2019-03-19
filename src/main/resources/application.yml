@@ -10,3 +10,20 @@ socket:
   pingInterval: 25000
 logging:
   config: "classpath:logback.xml"
+
+spring:
+  rabbitmq:
+    addresses: 127.0.0.1:5672
+    username: user
+    password: user
+    virtual-host: /
+    publisher-confirms: true
+redis:
+  host: 192.168.145.132
+  port: 6379
+  timeout: 20000
+  pool:
+    max-active: 8
+    min-idle: 0
+    max-idle: 8
+    max-wait: 20000
