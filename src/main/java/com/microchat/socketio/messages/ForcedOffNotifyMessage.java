@@ -1,6 +1,7 @@
 package com.microchat.socketio.messages;
 
-import java.io.Serializable;
+import com.corundumstudio.socketio.store.pubsub.PubSubMessage;
+
 import java.util.UUID;
 
 /**
@@ -9,7 +10,7 @@ import java.util.UUID;
  * @author pengju.liao
  * @since 2019年03月19日
  */
-public class ForcedOffNotifyMessage implements Serializable {
+public class ForcedOffNotifyMessage extends PubSubMessage {
 
     private static final long serialVersionUID = 2268917122709317368L;
 

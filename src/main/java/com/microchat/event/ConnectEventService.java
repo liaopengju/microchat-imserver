@@ -12,7 +12,7 @@ public interface ConnectEventService {
     /**
      * 处理client 连接事件
      *
-     * @param client 客户端对象
+     * @param client
      */
     void handler(SocketIOClient client);
 }

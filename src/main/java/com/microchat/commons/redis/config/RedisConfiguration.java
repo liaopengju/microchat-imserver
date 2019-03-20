@@ -3,17 +3,16 @@ package com.microchat.commons.redis.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microchat.listener.MessageListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import javax.sound.midi.Receiver;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * redis 配置
@@ -45,6 +44,20 @@ public class RedisConfiguration {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+    @Bean
+    RedisMessageListenerContainer container(RedisConnectionFactory redisConnectionFactory,MessageListenerAdapter messageListenerAdapter) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(redisConnectionFactory);
+        container.addMessageListener(messageListenerAdapter, new PatternTopic("systemNotification"));
+        return container;
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(MessageListener messageListener){
+        MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(messageListener, "onMessage");
+        return listenerAdapter;
     }
 
 }

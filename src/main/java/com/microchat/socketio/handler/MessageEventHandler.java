@@ -6,7 +6,8 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import com.microchat.client.NettyClients;
+import com.microchat.commons.spring.SpringContextUtil;
+import com.microchat.event.ConnectEventService;
 import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
@@ -33,10 +34,8 @@ public class MessageEventHandler {
      */
     @OnConnect
     public void onConnect(SocketIOClient client) {
-
-
-
-
+        ConnectEventService connectEventService = SpringContextUtil.getBean(ConnectEventService.class);
+        connectEventService.handler(client);
     }
 
     /**
@@ -57,7 +56,7 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "message")
     public void onMessageEvent(SocketIOClient client, AckRequest request, Message message) {
-        System.out.println("消息开始");
+
     }
 
     /**
