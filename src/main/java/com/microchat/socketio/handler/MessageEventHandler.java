@@ -7,7 +7,7 @@ import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.microchat.commons.spring.SpringContextUtil;
-import com.microchat.event.ConnectEventService;
+import com.microchat.messageevent.ConnectEventService;
 import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;

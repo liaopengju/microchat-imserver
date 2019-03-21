@@ -1,23 +1,18 @@
-package com.microchat.event.impl;
+package com.microchat.messageevent.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
-import com.microchat.commons.spring.SpringContextUtil;
-import com.microchat.event.ConnectEventService;
+import com.microchat.messageevent.ConnectEventService;
 import com.microchat.socketio.messages.ForcedOffNotifyMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 连接事件处理实现类
@@ -67,7 +62,7 @@ public class ConnectEventServiceImpl implements ConnectEventService {
      * @param clientId 客户端业务Id
      */
     private void updateClientOnlineStatus(SocketIOClient client, String clientId) {
-        String oldSessionId = (String)redisTemplate.opsForValue().get(clientId);
+        String oldSessionId = (String) redisTemplate.opsForValue().get(clientId);
         if(oldSessionId != null && !client.getSessionId().toString().equals(oldSessionId)) {
             //通知老客户端被异地登陆,需要强制下线
             ForcedOffNotifyMessage forcedOffNotifyMessage = new ForcedOffNotifyMessage();

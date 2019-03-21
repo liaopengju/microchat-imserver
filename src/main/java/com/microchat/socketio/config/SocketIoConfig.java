@@ -72,9 +72,6 @@ public class SocketIoConfig {
      */
     private SocketIONamespace messageSocketNameSpace;
 
-    @Autowired
-    private MessageListener connectMessageListener;
-
     /***
      * 配置socketIo服务
      * @return socketIo服务

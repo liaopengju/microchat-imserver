@@ -27,7 +27,7 @@ public class ExceptionListenerImpl implements ExceptionListener {
      */
     @Override
     public void onEventException(Exception e, List<Object> list, SocketIOClient socketIOClient) {
-        LOGGER.info("连接时出现异常。e:{}", e);
+        LOGGER.info("事件时出现异常。e:{}", e);
     }
 
     /***
@@ -37,7 +37,7 @@ public class ExceptionListenerImpl implements ExceptionListener {
      */
     @Override
     public void onDisconnectException(Exception e, SocketIOClient socketIOClient) {
-
+        LOGGER.info("断开连接时出现异常。e:{}", e);
     }
 
     /***
@@ -47,7 +47,7 @@ public class ExceptionListenerImpl implements ExceptionListener {
      */
     @Override
     public void onConnectException(Exception e, SocketIOClient socketIOClient) {
-
+        LOGGER.info("连接时出现异常。e:{}", e);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ExceptionListenerImpl implements ExceptionListener {
      */
     @Override
     public void onPingException(Exception e, SocketIOClient socketIOClient) {
-
+        LOGGER.info("ping时出现异常。e:{}", e);
     }
 
     /**
