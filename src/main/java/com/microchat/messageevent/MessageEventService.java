@@ -1,5 +1,6 @@
 package com.microchat.messageevent;
 
+import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 
 /**
@@ -14,5 +15,5 @@ public interface MessageEventService {
      *
      * @param client
      */
-    void handler(SocketIOClient client);
+    void handler(SocketIOClient client, AckRequest ackRequest, Object object);
 }

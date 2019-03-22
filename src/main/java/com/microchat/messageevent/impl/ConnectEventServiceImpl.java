@@ -1,5 +1,6 @@
 package com.microchat.messageevent.impl;
 
+import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
@@ -42,7 +43,7 @@ public class ConnectEventServiceImpl implements MessageEventService {
     private ClientService clientServiceImpl;
 
     @Override
-    public void handler(SocketIOClient client) {
+    public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
         // 系统标识
         String appId = client.getHandshakeData().getSingleUrlParam(APP_KEY);
         // 消息发送方

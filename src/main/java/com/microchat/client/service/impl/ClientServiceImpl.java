@@ -1,15 +1,14 @@
 package com.microchat.client.service.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIONamespace;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
+import com.microchat.socketio.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 客户端相关操作类
@@ -26,6 +25,9 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private SocketIONamespace messageSocketNameSpace;
+
     @Override
     public void forcedOff(SocketIOClient client, String clientId, String appId) {
         //取消该用户单聊订阅
@@ -36,5 +38,34 @@ public class ClientServiceImpl implements ClientService {
         redisTemplate.delete(clientId);
         //发送强制下线通知并断开连接
         client.disconnect();
+    }
+
+    @Override
+    public Boolean isNewClient(String clientId, SocketIOClient client) {
+        //获取最新的客户端标识
+        String sessionId = (String) redisTemplate.opsForValue().get(client);
+        // 当前客户端是最新客户端
+        return client.getSessionId().toString().equals(sessionId);
+    }
+
+    @Override
+    public void sendMessageToClient(Message message) {
+        String clientId = message.getAppId() + "_" + message.getToUser();
+        SocketIOClient socketIOClient = NettyClients.getClient(clientId);
+        if(socketIOClient != null) {
+            socketIOClient.sendEvent("message", message);
+        }
+    }
+
+    @Override
+    public void sendMessageToRoom(Message message) {
+        String roomId = message.getAppId() + "_" + message.getToUser();
+        String clientId = message.getAppId() + "_" + message.getFromUser();
+        SocketIOClient socketIOClient = NettyClients.getClient(clientId);
+        if(socketIOClient != null) {
+            messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", socketIOClient, message);
+        } else {
+            messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", message);
+        }
     }
 }
