@@ -2,6 +2,8 @@ package com.microchat.commons.redis.utils;
 
 
 import com.microchat.commons.spring.SpringContextUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
@@ -19,6 +21,8 @@ import java.util.List;
  */
 @Component
 public class RedisPubSubUtil {
+    /** 日志记录器 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisPubSubUtil.class);
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -31,7 +35,9 @@ public class RedisPubSubUtil {
     public void subscribe(String channel) {
         RedisMessageListenerContainer container = SpringContextUtil.getBean(RedisMessageListenerContainer.class);
         MessageListenerAdapter listenerAdapter = SpringContextUtil.getBean(MessageListenerAdapter.class);
+        LOGGER.info("服务器开始订阅{}", channel);
         container.addMessageListener(listenerAdapter, new PatternTopic(channel));
+        LOGGER.info("服务器订阅{}完成", channel);
     }
 
     /**
@@ -43,7 +49,9 @@ public class RedisPubSubUtil {
         RedisMessageListenerContainer container = SpringContextUtil.getBean(RedisMessageListenerContainer.class);
         MessageListenerAdapter listenerAdapter = SpringContextUtil.getBean(MessageListenerAdapter.class);
         for(String channel : channels) {
+            LOGGER.info("服务器开始订阅{}", channel);
             container.addMessageListener(listenerAdapter, new PatternTopic(channel));
+            LOGGER.info("服务器订阅{}完成", channel);
         }
     }
 
@@ -55,7 +63,9 @@ public class RedisPubSubUtil {
     public void unSubscribe(String channel) {
         RedisMessageListenerContainer container = SpringContextUtil.getBean(RedisMessageListenerContainer.class);
         MessageListenerAdapter listenerAdapter = SpringContextUtil.getBean(MessageListenerAdapter.class);
+        LOGGER.info("服务器开始取消订阅{}", channel);
         container.removeMessageListener(listenerAdapter, new PatternTopic(channel));
+        LOGGER.info("服务器取消订阅{}完成", channel);
     }
 
     /**
@@ -67,7 +77,9 @@ public class RedisPubSubUtil {
         RedisMessageListenerContainer container = SpringContextUtil.getBean(RedisMessageListenerContainer.class);
         MessageListenerAdapter listenerAdapter = SpringContextUtil.getBean(MessageListenerAdapter.class);
         for(String channel : channels) {
+            LOGGER.info("服务器开始取消订阅{}", channel);
             container.removeMessageListener(listenerAdapter, new PatternTopic(channel));
+            LOGGER.info("服务器取消订阅{}完成", channel);
         }
     }
 
@@ -78,7 +90,9 @@ public class RedisPubSubUtil {
      * @param message 消息内容
      */
     public void publish(String channel, Object message) {
+        LOGGER.info("准备redis 向通道{}中发布数据data:{}", channel, message);
         redisTemplate.convertAndSend(channel, message);
+        LOGGER.info("redis 向通道{}中发布数据data:{}完成", channel, message);
     }
 
 

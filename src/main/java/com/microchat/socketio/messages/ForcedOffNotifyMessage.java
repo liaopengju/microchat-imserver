@@ -14,12 +14,22 @@ public class ForcedOffNotifyMessage extends PubSubMessage {
 
     private static final long serialVersionUID = 2268917122709317368L;
 
+    /**系统Id*/
+    private String appId;
     /** 客户端Id */
     private String clientId;
     /** 客户端会话Id */
     private UUID sessionId;
     /** 强制下线通知内容 */
     private String message;
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
 
     public String getClientId() {
         return clientId;

@@ -2,6 +2,7 @@ package com.microchat.microchat;
 
 import com.microchat.commons.spring.SpringContextUtil;
 import com.microchat.listener.MessageListener;
+import com.microchat.pubsubevent.model.PubSubMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,10 @@ public class MicroChatApplicationTests {
     public void contextLoads() {
         RedisMessageListenerContainer container = SpringContextUtil.getBean(RedisMessageListenerContainer.class);
         MessageListenerAdapter listenerAdapter = SpringContextUtil.getBean(MessageListenerAdapter.class);
-        container.addMessageListener(listenerAdapter, new PatternTopic("java.*"));
-        redisTemplate.convertAndSend("java.666", "text");
-
+        container.addMessageListener(listenerAdapter, new PatternTopic("java.1"));
+        PubSubMessage pubSubMessage = new PubSubMessage();
+        pubSubMessage.setPubType("connect");
+        redisTemplate.convertAndSend("java.1", pubSubMessage);
     }
 
 }

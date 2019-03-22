@@ -1,4 +1,4 @@
-package com.microchat.client;
+package com.microchat.client.utils;
 
 import com.corundumstudio.socketio.SocketIOClient;
 
