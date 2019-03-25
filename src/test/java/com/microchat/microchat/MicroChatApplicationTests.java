@@ -19,9 +19,6 @@ public class MicroChatApplicationTests {
 
     @Autowired
     private RedisTemplate redisTemplate;
-    @Autowired
-    private MessageListener connectMessageListener;
-
 
     @Test
     public void contextLoads() {

@@ -11,7 +11,9 @@ import com.microchat.pubsubevent.model.PubSubMessage;
 public enum PubSubTypeEnum {
 
     /**强制下线处理接口*/
-    FORCED_OFF("forcedOffNotifyMessageHandler");
+    FORCED_OFF("forcedOffNotifyMessageHandler"),
+    /**发送消息接口*/
+    SEND_MESSAGE("sendMessageHandler");
 
     /**消费接口对应的类型名称*/
     private String className;
