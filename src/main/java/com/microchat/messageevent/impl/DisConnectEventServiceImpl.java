@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 /**
  * 断开连接事件服务类
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author pengju.liao
  * @since 2019年03月22日
  */
+@Service
 public class DisConnectEventServiceImpl implements MessageEventService {
     /** 日志记录器 */
     private static final Logger LOGGER = LoggerFactory.getLogger(DisConnectEventServiceImpl.class);

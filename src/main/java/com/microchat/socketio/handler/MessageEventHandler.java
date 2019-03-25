@@ -10,6 +10,7 @@ import com.microchat.commons.spring.SpringContextUtil;
 import com.microchat.messageevent.MessageEventService;
 import com.microchat.messageevent.impl.ConnectEventServiceImpl;
 import com.microchat.messageevent.impl.DisConnectEventServiceImpl;
+import com.microchat.messageevent.impl.SendMessageEventServiceImpl;
 import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
@@ -59,7 +60,7 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "message")
     public void onMessageEvent(SocketIOClient client, AckRequest request, Message message) {
-        MessageEventService messageEventService = SpringContextUtil.getBean(DisConnectEventServiceImpl.class);
+        MessageEventService messageEventService = SpringContextUtil.getBean(SendMessageEventServiceImpl.class);
         messageEventService.handler(client, request, message);
     }
 

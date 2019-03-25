@@ -20,12 +20,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class SendMessageEventServiceImpl implements MessageEventService {
 
+    private static final String APP_KEY = "appId";
+
+    private static final String FROM_USER_PARAM = "fromUser";
+
+    private static final String CLIENT_TYPE = "clientType";
+
     @Autowired
     private RedisPubSubUtil redisPubSubUtil;
 
     @Override
     public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
+        // 系统标识
+        String appId = client.getHandshakeData().getSingleUrlParam(APP_KEY);
+        // 消息发送方
+        String fromUser = client.getHandshakeData().getSingleUrlParam(FROM_USER_PARAM);
+        //客户端类型
+        String clientType = client.getHandshakeData().getSingleUrlParam(CLIENT_TYPE);
         Message message = (Message) object;
+        message.setFromUser(fromUser);
+        message.setAppId(appId);
         PubSubMessage pubSubMessage = new PubSubMessage();
         pubSubMessage.setPubType(PubSubTypeEnum.SEND_MESSAGE.getClassName());
         pubSubMessage.setMessage(message);

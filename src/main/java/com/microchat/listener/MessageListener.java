@@ -1,11 +1,15 @@
 package com.microchat.listener;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microchat.pubsubevent.SubMessageHandlerContext;
 import com.microchat.pubsubevent.model.PubSubMessage;
-import com.microchat.pubsubevent.service.SubMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,9 +29,16 @@ public class MessageListener {
     /**
      * 订阅消息入口
      *
-     * @param pubSubMessage
+     * @param message
      */
-    public void onMessage(PubSubMessage pubSubMessage) {
+    public void onMessage(String message) {
+        LOGGER.info("redis 消费消息：{}", message);
+        Jackson2JsonRedisSerializer seria = new Jackson2JsonRedisSerializer(PubSubMessage.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        seria.setObjectMapper(objectMapper);
+        PubSubMessage pubSubMessage = (PubSubMessage)seria.deserialize(message.getBytes());
         try {
             subMessageHandlerContext.getSubMessageHandler(pubSubMessage.getPubType()).messageHandler(pubSubMessage.getMessage());
         } catch (Exception e) {
