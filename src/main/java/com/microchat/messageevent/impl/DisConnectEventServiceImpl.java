@@ -52,7 +52,7 @@ public class DisConnectEventServiceImpl implements MessageEventService {
             redisTemplate.delete(clientId);
         }
         //删除本地缓存中的用户
-        NettyClients.removeClient(clientId);
+        NettyClients.removeClient(clientId,clientType);
         //取消订阅
         redisPubSubUtil.unSubscribe(clientId);
     }

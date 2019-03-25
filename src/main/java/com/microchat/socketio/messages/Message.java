@@ -15,6 +15,8 @@ public class Message implements Serializable {
 
     /**系统Id*/
     private String appId;
+    /**客户端类型*/
+    private String clientType;
     /** 服务器消息Id */
     private String msgId;
     /** 客户端消息Id */
@@ -42,6 +44,14 @@ public class Message implements Serializable {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 
     public String getFromUser() {

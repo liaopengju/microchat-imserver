@@ -18,6 +18,8 @@ public class ForcedOffNotifyMessage extends PubSubMessage {
     private String appId;
     /** 客户端Id */
     private String clientId;
+    /**客户端类型*/
+    private String clientType;
     /** 客户端会话Id */
     private UUID sessionId;
     /** 强制下线通知内容 */
@@ -37,6 +39,14 @@ public class ForcedOffNotifyMessage extends PubSubMessage {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public String getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(String clientType) {
+        this.clientType = clientType;
     }
 
     public UUID getSessionId() {

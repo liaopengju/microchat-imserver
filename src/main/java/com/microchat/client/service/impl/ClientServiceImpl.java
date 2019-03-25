@@ -29,11 +29,11 @@ public class ClientServiceImpl implements ClientService {
     private SocketIONamespace messageSocketNameSpace;
 
     @Override
-    public void forcedOff(SocketIOClient client, String clientId, String appId) {
+    public void forcedOff(SocketIOClient client, String clientId, String clientType) {
         //取消该用户单聊订阅
         redisPubSubUtil.unSubscribe(clientId);
         //删除该用户本地缓存的客户端
-        NettyClients.removeClient(clientId);
+        NettyClients.removeClient(clientId,clientType);
         //删除redis该用户缓存
         redisTemplate.delete(clientId);
         //发送强制下线通知并断开连接
@@ -51,8 +51,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void sendMessageToClient(Message message) {
         String clientId = message.getAppId() + "_" + message.getToUser();
-        SocketIOClient socketIOClient = NettyClients.getClient(clientId);
-        if(socketIOClient != null) {
+        SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
+        if (socketIOClient != null) {
             socketIOClient.sendEvent("message", message);
         }
     }
@@ -61,8 +61,8 @@ public class ClientServiceImpl implements ClientService {
     public void sendMessageToRoom(Message message) {
         String roomId = message.getAppId() + "_" + message.getToUser();
         String clientId = message.getAppId() + "_" + message.getFromUser();
-        SocketIOClient socketIOClient = NettyClients.getClient(clientId);
-        if(socketIOClient != null) {
+        SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
+        if (socketIOClient != null) {
             messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", socketIOClient, message);
         } else {
             messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", message);

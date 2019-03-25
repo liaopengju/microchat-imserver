@@ -27,7 +27,7 @@ public class ForcedOffNotifyMessageHandler implements SubMessageHandler {
     public void messageHandler(Object message) {
         LOGGER.info("强制下线接口收到消息message:{}", message);
         ForcedOffNotifyMessage forcedOffNotifyMessage = (ForcedOffNotifyMessage) message;
-        SocketIOClient socketIOClient = NettyClients.getClient(forcedOffNotifyMessage.getClientId());
-        clientServiceImpl.forcedOff(socketIOClient, forcedOffNotifyMessage.getClientId(), forcedOffNotifyMessage.getAppId());
+        SocketIOClient socketIOClient = NettyClients.getClient(forcedOffNotifyMessage.getClientId(),forcedOffNotifyMessage.getClientType());
+        clientServiceImpl.forcedOff(socketIOClient, forcedOffNotifyMessage.getClientId(), forcedOffNotifyMessage.getClientType());
     }
 }

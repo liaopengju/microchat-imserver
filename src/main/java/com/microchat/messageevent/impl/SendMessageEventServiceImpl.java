@@ -40,6 +40,7 @@ public class SendMessageEventServiceImpl implements MessageEventService {
         Message message = (Message) object;
         message.setFromUser(fromUser);
         message.setAppId(appId);
+        message.setClientType(clientType);
         PubSubMessage pubSubMessage = new PubSubMessage();
         pubSubMessage.setPubType(PubSubTypeEnum.SEND_MESSAGE.getClassName());
         pubSubMessage.setMessage(message);
