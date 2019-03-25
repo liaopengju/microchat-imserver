@@ -1,5 +1,6 @@
 package com.microchat.listener;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageListener {
-    /** 日志记录器 */
+    /**
+     * 日志记录器
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageListener.class);
 
     @Autowired
@@ -33,12 +36,7 @@ public class MessageListener {
      */
     public void onMessage(String message) {
         LOGGER.info("redis 消费消息：{}", message);
-        Jackson2JsonRedisSerializer seria = new Jackson2JsonRedisSerializer(PubSubMessage.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        seria.setObjectMapper(objectMapper);
-        PubSubMessage pubSubMessage = (PubSubMessage)seria.deserialize(message.getBytes());
+        PubSubMessage pubSubMessage = JSON.parseObject(message, PubSubMessage.class);
         try {
             subMessageHandlerContext.getSubMessageHandler(pubSubMessage.getPubType()).messageHandler(pubSubMessage.getMessage());
         } catch (Exception e) {

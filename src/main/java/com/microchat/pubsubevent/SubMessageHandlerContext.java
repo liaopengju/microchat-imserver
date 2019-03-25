@@ -24,6 +24,6 @@ public class SubMessageHandlerContext {
      * @return
      */
     public SubMessageHandler getSubMessageHandler(String subType) throws Exception {
-        return (SubMessageHandler) applicationContext.getBean(Class.forName(subType));
+        return (SubMessageHandler) applicationContext.getBean(subType);
     }
 }

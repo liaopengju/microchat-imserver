@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- *
+ * 订阅消息处理类
  * @author pengju.liao
  * @since 2019年03月22日
  */
