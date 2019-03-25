@@ -72,7 +72,7 @@ public class ConnectEventServiceImpl implements MessageEventService {
      * @param appId    系统编号
      */
     private void forcedOff(SocketIOClient client, String clientId, String clientType, String appId) {
-        String oldSessionId = (String) redisTemplate.opsForValue().get(clientId);
+        String oldSessionId = (String) redisTemplate.opsForValue().get(clientId + "_" + clientType);
         if (oldSessionId == null || client.getSessionId().toString().equals(oldSessionId)) {
             LOGGER.info("用户{}不存在在线的客户端或者本次连接的客户端sessionId:{}和在线客户端sessionId:{}是同一个连接。", clientId, client.getSessionId(), oldSessionId);
             return;
@@ -107,7 +107,7 @@ public class ConnectEventServiceImpl implements MessageEventService {
         LOGGER.info("本机缓存中保存对应关系clientId:{}", clientId);
         NettyClients.putClient(clientId, clientType, client);
         LOGGER.info("redis中保存在线用户信息。clientId:{}，sessionId{}", clientId, client.getSessionId().toString());
-        redisTemplate.opsForValue().set(clientId, client.getSessionId().toString());
+        redisTemplate.opsForValue().set(clientId + "_" + clientType, client.getSessionId().toString());
         LOGGER.info("将用户clientId{},添加到分组中", clientId);
         NettyClients.addClientToRoom(appId, clientId, clientType, rooms);
         LOGGER.info("用户clientId{}开始订阅通道消息", clientId);

@@ -29,8 +29,8 @@ public class NettyClients {
         ConcurrentHashMap<String, SocketIOClient> clientMap = clientsMap.get(clientId);
         if (clientMap == null) {
             clientMap = new ConcurrentHashMap();
-            clientMap.put(clientType, client);
         }
+        clientMap.put(clientType, client);
         clientsMap.put(clientId, clientMap);
     }
 

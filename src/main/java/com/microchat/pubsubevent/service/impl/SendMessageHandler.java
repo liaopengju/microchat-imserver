@@ -4,6 +4,8 @@ import com.microchat.client.service.ClientService;
 import com.microchat.pubsubevent.enums.SendTypeEnum;
 import com.microchat.pubsubevent.service.SubMessageHandler;
 import com.microchat.socketio.messages.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SendMessageHandler implements SubMessageHandler {
-
+    /** 日志记录器 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ForcedOffNotifyMessageHandler.class);
     @Autowired
     private ClientService clientServiceImpl;
 
@@ -28,8 +31,10 @@ public class SendMessageHandler implements SubMessageHandler {
     public void messageHandler(Object message) {
         Message msg = (Message) message;
         if((SendTypeEnum.CHAT.getSendType()).equals(msg.getSendType())) {
+            LOGGER.info("单聊消息msg:{}",msg);
             clientServiceImpl.sendMessageToClient(msg);
         } else {
+            LOGGER.info("群聊消息msg:{}",msg);
             clientServiceImpl.sendMessageToRoom(msg);
         }
     }
