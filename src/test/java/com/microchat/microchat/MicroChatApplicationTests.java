@@ -1,6 +1,6 @@
 package com.microchat.microchat;
 
-import com.microchat.pubsubevent.model.PubSubMessage;
+import com.microchat.pubevent.model.PubSubMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

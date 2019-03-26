@@ -1,6 +1,4 @@
-package com.microchat.pubsubevent.enums;
-
-import com.microchat.pubsubevent.model.PubSubMessage;
+package com.microchat.pubevent.enums;
 
 /**
  * 发布订阅类型枚举
@@ -8,7 +6,7 @@ import com.microchat.pubsubevent.model.PubSubMessage;
  * @author pengju.liao
  * @since 2019年03月22日
  */
-public enum PubSubTypeEnum {
+public enum PubTypeEnum {
 
     /**强制下线处理接口*/
     FORCED_OFF("forcedOffNotifyMessageHandler"),
@@ -22,7 +20,7 @@ public enum PubSubTypeEnum {
         return className;
     }
 
-    PubSubTypeEnum(String className) {
+    PubTypeEnum(String className) {
         this.className = className;
     }
 

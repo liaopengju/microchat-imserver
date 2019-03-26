@@ -1,4 +1,4 @@
-package com.microchat.messageevent;
+package com.microchat.pubevent.service;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;

@@ -1,4 +1,4 @@
-package com.microchat.pubsubevent.enums;
+package com.microchat.subevent.enums;
 
 /**
  * 发送类型

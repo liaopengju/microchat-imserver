@@ -1,11 +1,11 @@
-package com.microchat.messageevent.impl;
+package com.microchat.pubevent.service.impl;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
-import com.microchat.messageevent.MessageEventService;
+import com.microchat.pubevent.service.MessageEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

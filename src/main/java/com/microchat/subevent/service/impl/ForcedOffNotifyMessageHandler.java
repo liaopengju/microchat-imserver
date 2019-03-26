@@ -1,9 +1,9 @@
-package com.microchat.pubsubevent.service.impl;
+package com.microchat.subevent.service.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
-import com.microchat.pubsubevent.service.SubMessageHandler;
+import com.microchat.subevent.service.SubMessageHandler;
 import com.microchat.socketio.messages.ForcedOffNotifyMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

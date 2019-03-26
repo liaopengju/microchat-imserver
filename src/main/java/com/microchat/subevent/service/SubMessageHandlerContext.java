@@ -1,6 +1,6 @@
-package com.microchat.pubsubevent;
+package com.microchat.subevent.service;
 
-import com.microchat.pubsubevent.service.SubMessageHandler;
+import com.microchat.subevent.service.SubMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

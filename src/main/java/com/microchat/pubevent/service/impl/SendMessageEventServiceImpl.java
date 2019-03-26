@@ -1,12 +1,11 @@
-package com.microchat.messageevent.impl;
+package com.microchat.pubevent.service.impl;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.microchat.client.service.ClientService;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
-import com.microchat.messageevent.MessageEventService;
-import com.microchat.pubsubevent.enums.PubSubTypeEnum;
-import com.microchat.pubsubevent.model.PubSubMessage;
+import com.microchat.pubevent.enums.PubTypeEnum;
+import com.microchat.pubevent.model.PubSubMessage;
+import com.microchat.pubevent.service.MessageEventService;
 import com.microchat.socketio.messages.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class SendMessageEventServiceImpl implements MessageEventService {
         message.setAppId(appId);
         message.setClientType(clientType);
         PubSubMessage pubSubMessage = new PubSubMessage();
-        pubSubMessage.setPubType(PubSubTypeEnum.SEND_MESSAGE.getClassName());
+        pubSubMessage.setPubType(PubTypeEnum.SEND_MESSAGE.getClassName());
         pubSubMessage.setMessage(message);
         redisPubSubUtil.publish(message.getAppId() + "_" + message.getToUser(), pubSubMessage);
         ackRequest.sendAckData("发送成功");

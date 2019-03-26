@@ -1,4 +1,4 @@
-package com.microchat.pubsubevent.service;
+package com.microchat.subevent.service;
 
 /**
  * 订阅消息处理接口

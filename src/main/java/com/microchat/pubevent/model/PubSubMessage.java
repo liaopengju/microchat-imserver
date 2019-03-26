@@ -1,4 +1,4 @@
-package com.microchat.pubsubevent.model;
+package com.microchat.pubevent.model;
 
 /**
  * 发布订阅消息体
