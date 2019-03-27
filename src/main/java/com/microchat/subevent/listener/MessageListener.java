@@ -35,7 +35,6 @@ public class MessageListener {
         try {
             subMessageHandlerContext.getSubMessageHandler(pubSubMessage.getPubType()).messageHandler(pubSubMessage.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error("redis 消费失败。e:{}", e);
         }
     }

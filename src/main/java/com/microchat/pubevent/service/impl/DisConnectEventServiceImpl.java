@@ -1,10 +1,12 @@
 package com.microchat.pubevent.service.impl;
 
 import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
+import com.microchat.pubevent.enums.HandshakeParamEnum;
 import com.microchat.pubevent.service.MessageEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +25,6 @@ public class DisConnectEventServiceImpl implements MessageEventService {
     /** 日志记录器 */
     private static final Logger LOGGER = LoggerFactory.getLogger(DisConnectEventServiceImpl.class);
 
-    private static final String APP_KEY = "appId";
-
-    private static final String FROM_USER_PARAM = "fromUser";
-
-    private static final String CLIENT_TYPE = "clientType";
-
     @Autowired
     private RedisPubSubUtil redisPubSubUtil;
     @Autowired
@@ -38,12 +34,13 @@ public class DisConnectEventServiceImpl implements MessageEventService {
 
     @Override
     public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
+        HandshakeData handshakeData = client.getHandshakeData();
         // 系统标识
-        String appId = client.getHandshakeData().getSingleUrlParam(APP_KEY);
+        String appId = handshakeData.getSingleUrlParam(HandshakeParamEnum.APP_KEY.getParam());
         // 消息发送方
-        String fromUser = client.getHandshakeData().getSingleUrlParam(FROM_USER_PARAM);
+        String fromUser = handshakeData.getSingleUrlParam(HandshakeParamEnum.FROM_USER_PARAM.getParam());
         //客户端类型
-        String clientType = client.getHandshakeData().getSingleUrlParam(CLIENT_TYPE);
+        String clientType = handshakeData.getSingleUrlParam(HandshakeParamEnum.CLIENT_TYPE.getParam());
         LOGGER.info("连接时用户输入参数：appId:{},fromUser:{},clientType:{}", appId, fromUser, clientType);
         /**客户端业务ID*/
         String clientId = new StringBuffer(appId).append("_").append(fromUser).toString();
@@ -52,7 +49,7 @@ public class DisConnectEventServiceImpl implements MessageEventService {
             redisTemplate.delete(clientId);
         }
         //删除本地缓存中的用户
-        NettyClients.removeClient(clientId,clientType);
+        NettyClients.removeClient(clientId, clientType);
         //取消订阅
         redisPubSubUtil.unSubscribe(clientId);
     }

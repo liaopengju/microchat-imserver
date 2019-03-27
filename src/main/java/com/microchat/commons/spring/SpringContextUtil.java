@@ -1,9 +1,6 @@
 package com.microchat.commons.spring;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * springContextUtil
@@ -11,13 +8,14 @@ import org.springframework.stereotype.Component;
  * @author pengju.liao
  * @since 2019年03月19日
  */
-@Component("springContextUtil")
-public class SpringContextUtil implements ApplicationContextAware {
+public class SpringContextUtil {
 
     private static ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    private SpringContextUtil() {
+    }
+
+    public static void setApplicationContext(ApplicationContext applicationContext) {
         SpringContextUtil.applicationContext = applicationContext;
     }
 
@@ -26,12 +24,12 @@ public class SpringContextUtil implements ApplicationContextAware {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(String name) throws BeansException {
+    public static <T> T getBean(String name) {
         return (T) applicationContext.getBean(name);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(Class<?> clz) throws BeansException {
+    public static <T> T getBean(Class<?> clz) {
         return (T) applicationContext.getBean(clz);
     }
 }

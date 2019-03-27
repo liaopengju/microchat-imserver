@@ -2,6 +2,7 @@ package com.microchat.client.service.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
+import com.microchat.client.enums.SendEventEnum;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
@@ -33,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
         //取消该用户单聊订阅
         redisPubSubUtil.unSubscribe(clientId);
         //删除该用户本地缓存的客户端
-        NettyClients.removeClient(clientId,clientType);
+        NettyClients.removeClient(clientId, clientType);
         //删除redis该用户缓存
         redisTemplate.delete(clientId);
         //发送强制下线通知并断开连接
@@ -52,8 +53,8 @@ public class ClientServiceImpl implements ClientService {
     public void sendMessageToClient(Message message) {
         String clientId = message.getAppId() + "_" + message.getToUser();
         SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
-        if (socketIOClient != null) {
-            socketIOClient.sendEvent("message", message);
+        if(socketIOClient != null) {
+            socketIOClient.sendEvent(SendEventEnum.MESSAGE.getEvent(), message);
         }
     }
 
@@ -62,10 +63,10 @@ public class ClientServiceImpl implements ClientService {
         String roomId = message.getAppId() + "_" + message.getToUser();
         String clientId = message.getAppId() + "_" + message.getFromUser();
         SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
-        if (socketIOClient != null) {
-            messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", socketIOClient, message);
+        if(socketIOClient != null) {
+            messageSocketNameSpace.getRoomOperations(roomId).sendEvent(SendEventEnum.MESSAGE.getEvent(), socketIOClient, message);
         } else {
-            messageSocketNameSpace.getRoomOperations(roomId).sendEvent("message", message);
+            messageSocketNameSpace.getRoomOperations(roomId).sendEvent(SendEventEnum.MESSAGE.getEvent(), message);
         }
     }
 }

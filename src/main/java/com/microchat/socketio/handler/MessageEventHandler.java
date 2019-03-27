@@ -14,6 +14,8 @@ import com.microchat.pubevent.service.impl.SendMessageEventServiceImpl;
 import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 消息事件处理类
@@ -22,9 +24,13 @@ import com.microchat.socketio.messages.StatusNoticeMessage;
  * @since 2019年03月14日
  */
 public class MessageEventHandler {
+    /** 日志记录器 */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventHandler.class);
 
     /** IM 服务对象 */
     protected SocketIOServer server;
+
+
 
     public MessageEventHandler(SocketIOServer server) {
         this.server = server;
@@ -73,7 +79,7 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "optMessage")
     public void onOptMessageEvent(SocketIOClient client, AckRequest request, OptMessage optMessage) {
-        System.out.println("操作消息开始");
+        LOGGER.info("操作消息开始");
     }
 
     /**
@@ -85,6 +91,6 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "statusNotice")
     public void onStatusNoticeEvent(SocketIOClient client, AckRequest request, StatusNoticeMessage statusNoticeMessage) {
-        System.out.println("状态通知消息开始");
+        LOGGER.info("状态通知消息开始");
     }
 }

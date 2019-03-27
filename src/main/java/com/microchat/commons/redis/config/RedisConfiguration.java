@@ -52,8 +52,7 @@ public class RedisConfiguration {
 
     @Bean
     MessageListenerAdapter listenerAdapter(MessageListener messageListener) {
-        MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(messageListener, "onMessage");
-        return listenerAdapter;
+        return new MessageListenerAdapter(messageListener, "onMessage");
     }
 
 }

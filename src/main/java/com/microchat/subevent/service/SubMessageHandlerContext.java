@@ -1,6 +1,5 @@
 package com.microchat.subevent.service;
 
-import com.microchat.subevent.service.SubMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,7 @@ public class SubMessageHandlerContext {
      * @param subType 订阅类型
      * @return
      */
-    public SubMessageHandler getSubMessageHandler(String subType) throws Exception {
+    public SubMessageHandler getSubMessageHandler(String subType) {
         return (SubMessageHandler) applicationContext.getBean(subType);
     }
 }

@@ -1,11 +1,13 @@
 package com.microchat;
 
+import com.microchat.commons.spring.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ApplicationContext;
 
 /**
  * 项目启动类
@@ -21,7 +23,9 @@ public class MicroChatApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(MicroChatApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(MicroChatApplication.class, args);
+        SpringApplication application = new SpringApplication(MicroChatApplication.class);
+        ApplicationContext applicationContext = application.run(args);
         LOGGER.info("服务启动成功");
+        SpringContextUtil.setApplicationContext(applicationContext);
     }
 }

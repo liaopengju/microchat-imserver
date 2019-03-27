@@ -1,7 +1,8 @@
 package com.microchat.socketio.messages;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * 消息体对象
@@ -13,9 +14,9 @@ public class Message implements Serializable {
 
     private static final long serialVersionUID = -1168798885824673379L;
 
-    /**系统Id*/
+    /** 系统Id */
     private String appId;
-    /**客户端类型*/
+    /** 客户端类型 */
     private String clientType;
     /** 服务器消息Id */
     private String msgId;
@@ -23,7 +24,7 @@ public class Message implements Serializable {
     private String clientMsgId;
     /** 会话Id */
     private String sessionId;
-    /**消息发送方*/
+    /** 消息发送方 */
     private String fromUser;
     /** 消息接收发 */
     private String toUser;
@@ -36,7 +37,7 @@ public class Message implements Serializable {
     /** 是否重复发送 */
     private Boolean isResend;
     /** 业务数据 */
-    private Map businessData;
+    private JSONObject businessData;
 
     public String getAppId() {
         return appId;
@@ -70,11 +71,11 @@ public class Message implements Serializable {
         this.sessionId = sessionId;
     }
 
-    public Map getBusinessData() {
+    public JSONObject getBusinessData() {
         return businessData;
     }
 
-    public void setBusinessData(Map businessData) {
+    public void setBusinessData(JSONObject businessData) {
         this.businessData = businessData;
     }
 

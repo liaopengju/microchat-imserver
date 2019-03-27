@@ -1,8 +1,10 @@
 package com.microchat.pubevent.service.impl;
 
 import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
+import com.microchat.pubevent.enums.HandshakeParamEnum;
 import com.microchat.pubevent.enums.PubTypeEnum;
 import com.microchat.pubevent.model.PubSubMessage;
 import com.microchat.pubevent.service.MessageEventService;
@@ -19,23 +21,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class SendMessageEventServiceImpl implements MessageEventService {
 
-    private static final String APP_KEY = "appId";
-
-    private static final String FROM_USER_PARAM = "fromUser";
-
-    private static final String CLIENT_TYPE = "clientType";
-
     @Autowired
     private RedisPubSubUtil redisPubSubUtil;
 
     @Override
     public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
+        HandshakeData handshakeData = client.getHandshakeData();
         // 系统标识
-        String appId = client.getHandshakeData().getSingleUrlParam(APP_KEY);
+        String appId = handshakeData.getSingleUrlParam(HandshakeParamEnum.APP_KEY.getParam());
         // 消息发送方
-        String fromUser = client.getHandshakeData().getSingleUrlParam(FROM_USER_PARAM);
+        String fromUser = handshakeData.getSingleUrlParam(HandshakeParamEnum.FROM_USER_PARAM.getParam());
         //客户端类型
-        String clientType = client.getHandshakeData().getSingleUrlParam(CLIENT_TYPE);
+        String clientType = handshakeData.getSingleUrlParam(HandshakeParamEnum.CLIENT_TYPE.getParam());
         Message message = (Message) object;
         message.setFromUser(fromUser);
         message.setAppId(appId);

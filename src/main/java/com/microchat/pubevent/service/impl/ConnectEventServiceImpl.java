@@ -1,10 +1,12 @@
 package com.microchat.pubevent.service.impl;
 
 import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
+import com.microchat.pubevent.enums.HandshakeParamEnum;
 import com.microchat.pubevent.enums.PubTypeEnum;
 import com.microchat.pubevent.model.PubSubMessage;
 import com.microchat.pubevent.service.MessageEventService;
@@ -31,11 +33,6 @@ public class ConnectEventServiceImpl implements MessageEventService {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectEventServiceImpl.class);
 
-    private static final String APP_KEY = "appId";
-
-    private static final String FROM_USER_PARAM = "fromUser";
-
-    private static final String CLIENT_TYPE = "clientType";
 
     @Autowired
     private RedisPubSubUtil redisPubSubUtil;
@@ -46,17 +43,18 @@ public class ConnectEventServiceImpl implements MessageEventService {
 
     @Override
     public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
+        HandshakeData handData = client.getHandshakeData();
         // 系统标识
-        String appId = client.getHandshakeData().getSingleUrlParam(APP_KEY);
+        String appId = handData.getSingleUrlParam(HandshakeParamEnum.APP_KEY.getParam());
         // 消息发送方
-        String fromUser = client.getHandshakeData().getSingleUrlParam(FROM_USER_PARAM);
+        String fromUser = handData.getSingleUrlParam(HandshakeParamEnum.FROM_USER_PARAM.getParam());
         //客户端类型
-        String clientType = client.getHandshakeData().getSingleUrlParam(CLIENT_TYPE);
+        String clientType = handData.getSingleUrlParam(HandshakeParamEnum.CLIENT_TYPE.getParam());
         LOGGER.info("连接时用户输入参数：appId:{},fromUser:{},clientType:{}", appId, fromUser, clientType);
         /**客户端业务ID*/
         String clientId = new StringBuffer(appId).append("_").append(fromUser).toString();
         /**异地登陆强制下线*/
-        forcedOff(client, clientId, clientType, appId);
+        forcedOff(client, clientId, clientType);
         /**获取用户所在分组*/
         List<String> rooms = new ArrayList();
         /**上线客户端*/
@@ -69,9 +67,8 @@ public class ConnectEventServiceImpl implements MessageEventService {
      * @param client   客户端对象
      * @param clientId 客户端Id
      * @param clientId 客户端类型
-     * @param appId    系统编号
      */
-    private void forcedOff(SocketIOClient client, String clientId, String clientType, String appId) {
+    private void forcedOff(SocketIOClient client, String clientId, String clientType) {
         String oldSessionId = (String) redisTemplate.opsForHash().get(clientId, clientType);
         if(oldSessionId == null || client.getSessionId().toString().equals(oldSessionId)) {
             LOGGER.info("用户{}不存在在线的客户端或者本次连接的客户端sessionId:{}和在线客户端sessionId:{}是同一个连接。", clientId, client.getSessionId(), oldSessionId);
@@ -106,7 +103,7 @@ public class ConnectEventServiceImpl implements MessageEventService {
     private void onlineClient(SocketIOClient client, String appId, String clientId, String clientType, List<String> rooms) {
         LOGGER.info("本机缓存中保存对应关系clientId:{}", clientId);
         NettyClients.putClient(clientId, clientType, client);
-        LOGGER.info("redis中保存在线用户信息。clientId:{}，clientType:{},sessionId{}", clientId, clientType, client.getSessionId().toString());
+        LOGGER.info("redis中保存在线用户信息。clientId:{}，clientType:{},sessionId{}", clientId, clientType, client.getSessionId());
         redisTemplate.opsForHash().put(clientId, clientType, client.getSessionId().toString());
         LOGGER.info("将用户clientId{},添加到分组中", clientId);
         NettyClients.addClientToRoom(appId, clientId, clientType, rooms);
