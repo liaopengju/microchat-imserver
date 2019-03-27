@@ -25,7 +25,7 @@ public class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
 
     static {
         //解决fastJson autoType is not support错误
-        ParserConfig.getGlobalInstance().addAccept("com.microchat.socketio.messages.Message");
+        ParserConfig.getGlobalInstance().addAccept("com.microchat.socketio.messages.UserSendMessage");
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.microchat.pubevent.enums.HandshakeParamEnum;
 import com.microchat.pubevent.enums.PubTypeEnum;
 import com.microchat.pubevent.model.PubSubMessage;
 import com.microchat.pubevent.service.MessageEventService;
-import com.microchat.socketio.messages.Message;
+import com.microchat.socketio.messages.UserSendMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +33,14 @@ public class SendMessageEventServiceImpl implements MessageEventService {
         String fromUser = handshakeData.getSingleUrlParam(HandshakeParamEnum.FROM_USER_PARAM.getParam());
         //客户端类型
         String clientType = handshakeData.getSingleUrlParam(HandshakeParamEnum.CLIENT_TYPE.getParam());
-        Message message = (Message) object;
+        UserSendMessageVO message = (UserSendMessageVO) object;
         message.setFromUser(fromUser);
         message.setAppId(appId);
         message.setClientType(clientType);
         PubSubMessage pubSubMessage = new PubSubMessage();
         pubSubMessage.setPubType(PubTypeEnum.SEND_MESSAGE.getClassName());
         pubSubMessage.setMessage(message);
-        redisPubSubUtil.publish(message.getAppId() + "_" + message.getToUser(), pubSubMessage);
+        redisPubSubUtil.publish(message.getAppId() + "_" + message.getTarget(), pubSubMessage);
         ackRequest.sendAckData("发送成功");
     }
 }

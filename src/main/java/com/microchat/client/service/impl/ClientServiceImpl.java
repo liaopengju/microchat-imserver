@@ -6,7 +6,7 @@ import com.microchat.client.enums.SendEventEnum;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
-import com.microchat.socketio.messages.Message;
+import com.microchat.socketio.messages.UserSendMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -50,8 +50,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void sendMessageToClient(Message message) {
-        String clientId = message.getAppId() + "_" + message.getToUser();
+    public void sendMessageToClient(UserSendMessageVO message) {
+        String clientId = message.getAppId() + "_" + message.getTarget();
         SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
         if(socketIOClient != null) {
             socketIOClient.sendEvent(SendEventEnum.MESSAGE.getEvent(), message);
@@ -59,8 +59,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void sendMessageToRoom(Message message) {
-        String roomId = message.getAppId() + "_" + message.getToUser();
+    public void sendMessageToRoom(UserSendMessageVO message) {
+        String roomId = message.getAppId() + "_" + message.getTarget();
         String clientId = message.getAppId() + "_" + message.getFromUser();
         SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
         if(socketIOClient != null) {

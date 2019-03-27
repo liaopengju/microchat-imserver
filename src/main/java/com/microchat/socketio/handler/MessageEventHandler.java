@@ -11,9 +11,9 @@ import com.microchat.pubevent.service.MessageEventService;
 import com.microchat.pubevent.service.impl.ConnectEventServiceImpl;
 import com.microchat.pubevent.service.impl.DisConnectEventServiceImpl;
 import com.microchat.pubevent.service.impl.SendMessageEventServiceImpl;
-import com.microchat.socketio.messages.Message;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
+import com.microchat.socketio.messages.UserSendMessageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +65,7 @@ public class MessageEventHandler {
      * @param request
      */
     @OnEvent(value = "message")
-    public void onMessageEvent(SocketIOClient client, AckRequest request, Message message) {
+    public void onMessageEvent(SocketIOClient client, AckRequest request, UserSendMessageVO message) {
         MessageEventService messageEventService = SpringContextUtil.getBean(SendMessageEventServiceImpl.class);
         messageEventService.handler(client, request, message);
     }

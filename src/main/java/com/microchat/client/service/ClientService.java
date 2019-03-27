@@ -1,7 +1,7 @@
 package com.microchat.client.service;
 
 import com.corundumstudio.socketio.SocketIOClient;
-import com.microchat.socketio.messages.Message;
+import com.microchat.socketio.messages.UserSendMessageVO;
 
 /**
  * 客户端操作服务
@@ -33,12 +33,12 @@ public interface ClientService {
      *
      * @param message 消息体
      */
-    void sendMessageToClient(Message message);
+    void sendMessageToClient(UserSendMessageVO message);
 
     /**
      * 发消息到群组
      *
      * @param message 消息体
      */
-    void sendMessageToRoom(Message message);
+    void sendMessageToRoom(UserSendMessageVO message);
 }
