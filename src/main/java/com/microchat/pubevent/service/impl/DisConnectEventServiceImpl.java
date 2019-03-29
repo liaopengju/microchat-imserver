@@ -44,13 +44,15 @@ public class DisConnectEventServiceImpl implements MessageEventService {
         LOGGER.info("连接时用户输入参数：appId:{},fromUser:{},clientType:{}", appId, fromUser, clientType);
         /**客户端业务ID*/
         String clientId = new StringBuffer(appId).append("_").append(fromUser).toString();
-        if(clientServiceImpl.isNewClient(clientId, client)) {
+        if(clientServiceImpl.isNewClient(clientId, clientType, client)) {
             //删除redis中缓存
             redisTemplate.delete(clientId);
         }
         //删除本地缓存中的用户
         NettyClients.removeClient(clientId, clientType);
-        //取消订阅
-        redisPubSubUtil.unSubscribe(clientId);
+        if(NettyClients.getClients(clientId).size() == 0) {
+            //取消订阅
+            redisPubSubUtil.unSubscribe(clientId);
+        }
     }
 }

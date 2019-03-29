@@ -31,7 +31,7 @@ public class UserSendMessageVO implements Serializable {
     /** 业务数据 */
     private JSONObject businessData;
     /** 消息内容 */
-    private Message message;
+    private JSONObject message;
 
 
     public String getAppId() {
@@ -98,11 +98,11 @@ public class UserSendMessageVO implements Serializable {
         this.businessData = businessData;
     }
 
-    public Message getMessage() {
+    public JSONObject getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(JSONObject message) {
         this.message = message;
     }
 

@@ -42,9 +42,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Boolean isNewClient(String clientId, SocketIOClient client) {
+    public Boolean isNewClient(String clientId, String clientType,SocketIOClient client) {
         //获取最新的客户端标识
-        String sessionId = (String) redisTemplate.opsForValue().get(clientId);
+        String sessionId = (String) redisTemplate.opsForHash().get(clientId,clientType);
         // 当前客户端是最新客户端
         return client.getSessionId().toString().equals(sessionId);
     }
