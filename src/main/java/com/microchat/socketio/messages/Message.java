@@ -3,7 +3,7 @@ package com.microchat.socketio.messages;
 import java.io.Serializable;
 
 /**
- * 基础消息体
+ * 基础消息体(其他客户端通讯时消息格式--项目中不用)
  *
  * @author pengju.liao
  * @since 2019年03月27日

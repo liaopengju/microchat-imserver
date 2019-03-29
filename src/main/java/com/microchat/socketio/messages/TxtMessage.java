@@ -1,7 +1,7 @@
 package com.microchat.socketio.messages;
 
 /**
- * 文件消息
+ * 文件消息(其他客户端通讯时消息格式--项目中不用)
  *
  * @author pengju.liao
  * @since 2019年03月27日
