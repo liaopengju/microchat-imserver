@@ -71,7 +71,7 @@ public class ExceptionListenerImpl implements ExceptionListener {
      */
     @Override
     public boolean exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable throwable) {
-        LOGGER.info("通道读写异常。throwable:{}");
+        LOGGER.info("通道读写异常。throwable:{}",throwable);
         return false;
     }
 }
