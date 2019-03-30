@@ -4,6 +4,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * netty 客户端工具类
@@ -12,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2019年03月19日
  */
 public class NettyClients {
+
+    private NettyClients() {
+    }
 
     /**
      * 在线客户端集合类
@@ -27,7 +31,7 @@ public class NettyClients {
      */
     public static void putClient(String clientId, String clientType, SocketIOClient client) {
         ConcurrentHashMap<String, SocketIOClient> clientMap = clientsMap.get(clientId);
-        if (clientMap == null) {
+        if(clientMap == null) {
             clientMap = new ConcurrentHashMap();
         }
         clientMap.put(clientType, client);
@@ -40,7 +44,7 @@ public class NettyClients {
      *
      * @param clientId 客户端Id
      */
-    public static ConcurrentHashMap<String, SocketIOClient> getClients(String clientId) {
+    public static ConcurrentMap<String, SocketIOClient> getClients(String clientId) {
         return clientsMap.get(clientId);
     }
 
@@ -53,7 +57,7 @@ public class NettyClients {
      */
     public static SocketIOClient getClient(String clientId, String clientType) {
         ConcurrentHashMap<String, SocketIOClient> clientMap = clientsMap.get(clientId);
-        if (clientMap != null) {
+        if(clientMap != null) {
             return clientMap.get(clientType);
         }
         return null;
@@ -68,7 +72,7 @@ public class NettyClients {
      */
     public static void removeClient(String clientId, String clientType) {
         ConcurrentHashMap<String, SocketIOClient> clientMap = clientsMap.get(clientId);
-        if (clientMap != null) {
+        if(clientMap != null) {
             clientMap.remove(clientType);
         }
     }
@@ -84,11 +88,9 @@ public class NettyClients {
      */
     public static void addClientToRoom(String appId, String clientId, String clientType, List<String> rooms) {
         SocketIOClient userClient = getClient(clientId, clientType);
-        if (userClient != null) {
-            for (String roomId : rooms) {
-                if (userClient != null) {
-                    userClient.joinRoom(appId + "_" + roomId);
-                }
+        if(userClient != null) {
+            for(String roomId : rooms) {
+                userClient.joinRoom(appId + "_" + roomId);
             }
         }
     }
@@ -105,7 +107,7 @@ public class NettyClients {
      */
     public static void deleteRoomUser(String appId, String clientId, String clientType, String roomId) {
         SocketIOClient userClient = getClient(clientId, clientType);
-        if (userClient != null) {
+        if(userClient != null) {
             userClient.leaveRoom(appId + "_" + roomId);
         }
     }

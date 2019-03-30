@@ -1,7 +1,6 @@
 package com.microchat.commons.redis.config;
 
 import com.microchat.commons.redis.utils.FastJsonRedisSerializer;
-import com.microchat.listener.MessageListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -10,6 +9,7 @@ import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import com.microchat.subevent.listener.MessageListener;
 
 /**
  * redis 配置
@@ -52,8 +52,7 @@ public class RedisConfiguration {
 
     @Bean
     MessageListenerAdapter listenerAdapter(MessageListener messageListener) {
-        MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(messageListener, "onMessage");
-        return listenerAdapter;
+        return new MessageListenerAdapter(messageListener, "onMessage");
     }
 
 }

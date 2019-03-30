@@ -1,17 +1,17 @@
-package com.microchat.pubsubevent.service.impl;
+package com.microchat.subevent.service.impl;
 
 import com.microchat.client.service.ClientService;
-import com.microchat.pubsubevent.enums.SendTypeEnum;
-import com.microchat.pubsubevent.service.SubMessageHandler;
-import com.microchat.socketio.messages.Message;
+import com.microchat.socketio.messages.UserSendMessageVO;
+import com.microchat.subevent.enums.TargetTypeEnum;
+import com.microchat.subevent.service.SubMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * 订阅消息处理类
+ *
  * @author pengju.liao
  * @since 2019年03月22日
  */
@@ -29,13 +29,15 @@ public class SendMessageHandler implements SubMessageHandler {
      */
     @Override
     public void messageHandler(Object message) {
-        Message msg = (Message) message;
-        if((SendTypeEnum.CHAT.getSendType()).equals(msg.getSendType())) {
-            LOGGER.info("单聊消息msg:{}",msg);
+        UserSendMessageVO msg = (UserSendMessageVO) message;
+        if((TargetTypeEnum.CHAT.getTargetType()).equals(msg.getTargetType())) {
+            LOGGER.info("单聊消息msg:{}", msg);
             clientServiceImpl.sendMessageToClient(msg);
-        } else {
-            LOGGER.info("群聊消息msg:{}",msg);
+        } else if((TargetTypeEnum.GROUP_CHAT.getTargetType()).equals(msg.getTargetType())) {
+            LOGGER.info("群聊消息msg:{}", msg);
             clientServiceImpl.sendMessageToRoom(msg);
+        } else {
+            LOGGER.info("未知消息sendType,不处理。message:{}", message);
         }
     }
 }

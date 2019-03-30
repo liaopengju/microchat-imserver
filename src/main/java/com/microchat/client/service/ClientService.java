@@ -1,7 +1,7 @@
 package com.microchat.client.service;
 
 import com.corundumstudio.socketio.SocketIOClient;
-import com.microchat.socketio.messages.Message;
+import com.microchat.socketio.messages.UserSendMessageVO;
 
 /**
  * 客户端操作服务
@@ -22,23 +22,24 @@ public interface ClientService {
     /**
      * 判断当前客户端是否最新客户端
      *
-     * @param clientId 客户端Id
-     * @param client   客户端对象
+     * @param clientId   客户端Id
+     * @param clientType 客户端类型
+     * @param client     客户端对象
      * @return
      */
-    Boolean isNewClient(String clientId, SocketIOClient client);
+    Boolean isNewClient(String clientId, String clientType, SocketIOClient client);
 
     /**
      * 发送消息到客户端
      *
      * @param message 消息体
      */
-    void sendMessageToClient(Message message);
+    void sendMessageToClient(UserSendMessageVO message);
 
     /**
      * 发消息到群组
      *
      * @param message 消息体
      */
-    void sendMessageToRoom(Message message);
+    void sendMessageToRoom(UserSendMessageVO message);
 }
