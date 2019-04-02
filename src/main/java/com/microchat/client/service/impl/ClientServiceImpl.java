@@ -2,7 +2,7 @@ package com.microchat.client.service.impl;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
-import com.microchat.client.enums.SendEventEnum;
+import com.microchat.socketio.enums.SendEventEnum;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
@@ -54,7 +54,7 @@ public class ClientServiceImpl implements ClientService {
         String clientId = message.getAppId() + "_" + message.getTarget();
         SocketIOClient socketIOClient = NettyClients.getClient(clientId, message.getClientType());
         if(socketIOClient != null) {
-            socketIOClient.sendEvent(SendEventEnum.MESSAGE.getEvent(), message);
+            socketIOClient.sendEvent(message.getUserEvent(), message);
         }
     }
 

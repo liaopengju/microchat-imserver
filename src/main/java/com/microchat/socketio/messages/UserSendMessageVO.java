@@ -26,6 +26,8 @@ public class UserSendMessageVO implements Serializable {
     private String targetType;
     /** 客户端消息Id */
     private String clientMsgId;
+    /**用户自定义事件*/
+    private String userEvent;
     /** 是否重复发送 */
     private Boolean isResend;
     /** 业务数据 */
@@ -88,6 +90,14 @@ public class UserSendMessageVO implements Serializable {
 
     public void setResend(Boolean resend) {
         isResend = resend;
+    }
+
+    public String getUserEvent() {
+        return userEvent;
+    }
+
+    public void setUserEvent(String userEvent) {
+        this.userEvent = userEvent;
     }
 
     public JSONObject getBusinessData() {

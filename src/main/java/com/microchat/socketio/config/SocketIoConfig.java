@@ -6,6 +6,7 @@ import com.microchat.socketio.enums.NameSpaceEnum;
 import com.microchat.socketio.handler.MessageEventHandler;
 import com.microchat.socketio.listener.AuthorizationListenerImpl;
 import com.microchat.socketio.listener.ExceptionListenerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,6 +71,9 @@ public class SocketIoConfig {
      */
     private SocketIONamespace messageSocketNameSpace;
 
+    @Autowired
+    private MessageEventHandler messageEventHandler;
+
     /***
      * 配置socketIo服务
      * @return socketIo服务
@@ -101,12 +105,11 @@ public class SocketIoConfig {
     }
 
     /**
-     * @param server IM 服务对象
      * @return {@link SocketIONamespace}
      */
     @Bean(name = "messageSocketNameSpace")
-    public SocketIONamespace getIMSocketIONameSpace(SocketIOServer server) {
-        messageSocketNameSpace.addListeners(new MessageEventHandler(server));
+    public SocketIONamespace getIMSocketIONameSpace() {
+        messageSocketNameSpace.addListeners(messageEventHandler);
         return messageSocketNameSpace;
     }
 }

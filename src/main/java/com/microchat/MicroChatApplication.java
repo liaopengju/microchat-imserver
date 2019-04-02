@@ -1,6 +1,5 @@
 package com.microchat;
 
-import com.microchat.commons.spring.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -23,9 +22,7 @@ public class MicroChatApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(MicroChatApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(MicroChatApplication.class);
-        ApplicationContext applicationContext = application.run(args);
+        new SpringApplication(MicroChatApplication.class).run(args);
         LOGGER.info("服务启动成功");
-        SpringContextUtil.setApplicationContext(applicationContext);
     }
 }

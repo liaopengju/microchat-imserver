@@ -3,6 +3,7 @@ package com.microchat.pubevent.service.impl;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
+import com.microchat.socketio.enums.SendEventEnum;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
 import com.microchat.pubevent.enums.HandshakeParamEnum;
 import com.microchat.pubevent.enums.PubTypeEnum;
@@ -11,6 +12,7 @@ import com.microchat.pubevent.service.MessageEventService;
 import com.microchat.socketio.messages.UserSendMessageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * 发送消息事件处理类
@@ -37,6 +39,9 @@ public class SendMessageEventServiceImpl implements MessageEventService {
         message.setFromUser(fromUser);
         message.setAppId(appId);
         message.setClientType(clientType);
+        if (StringUtils.isEmpty(message.getUserEvent())) {
+            message.setUserEvent(SendEventEnum.MESSAGE.getEvent());
+        }
         PubSubMessage pubSubMessage = new PubSubMessage();
         pubSubMessage.setPubType(PubTypeEnum.SEND_MESSAGE.getClassName());
         pubSubMessage.setMessage(message);

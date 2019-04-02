@@ -2,6 +2,7 @@ package com.microchat.socketio.listener;
 
 import com.corundumstudio.socketio.AuthorizationListener;
 import com.corundumstudio.socketio.HandshakeData;
+import org.springframework.stereotype.Component;
 
 /**
  * IM 权限校验监听

@@ -1,4 +1,4 @@
-package com.microchat.client.enums;
+package com.microchat.socketio.enums;
 
 /**
  * 发送消息枚举

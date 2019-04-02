@@ -2,20 +2,17 @@ package com.microchat.socketio.handler;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import com.microchat.commons.spring.SpringContextUtil;
 import com.microchat.pubevent.service.MessageEventService;
-import com.microchat.pubevent.service.impl.ConnectEventServiceImpl;
-import com.microchat.pubevent.service.impl.DisConnectEventServiceImpl;
-import com.microchat.pubevent.service.impl.SendMessageEventServiceImpl;
 import com.microchat.socketio.messages.OptMessage;
 import com.microchat.socketio.messages.StatusNoticeMessage;
 import com.microchat.socketio.messages.UserSendMessageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 消息事件处理类
@@ -23,18 +20,18 @@ import org.slf4j.LoggerFactory;
  * @author pengju.liao
  * @since 2019年03月14日
  */
+@Component
 public class MessageEventHandler {
     /** 日志记录器 */
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventHandler.class);
 
-    /** IM 服务对象 */
-    protected SocketIOServer server;
+    @Autowired
+    private MessageEventService connectEventServiceImpl;
+    @Autowired
+    private MessageEventService disConnectEventServiceImpl;
+    @Autowired
+    private MessageEventService sendMessageEventServiceImpl;
 
-
-
-    public MessageEventHandler(SocketIOServer server) {
-        this.server = server;
-    }
 
     /**
      * 连接事件监听
@@ -43,8 +40,7 @@ public class MessageEventHandler {
      */
     @OnConnect
     public void onConnect(SocketIOClient client) {
-        MessageEventService messageEventService = SpringContextUtil.getBean(ConnectEventServiceImpl.class);
-        messageEventService.handler(client, null, null);
+        connectEventServiceImpl.handler(client, null, null);
     }
 
     /**
@@ -54,8 +50,7 @@ public class MessageEventHandler {
      */
     @OnDisconnect
     public void onDisConnect(SocketIOClient client) {
-        MessageEventService messageEventService = SpringContextUtil.getBean(DisConnectEventServiceImpl.class);
-        messageEventService.handler(client, null, null);
+        disConnectEventServiceImpl.handler(client, null, null);
     }
 
     /**
@@ -66,8 +61,7 @@ public class MessageEventHandler {
      */
     @OnEvent(value = "message")
     public void onMessageEvent(SocketIOClient client, AckRequest request, UserSendMessageVO message) {
-        MessageEventService messageEventService = SpringContextUtil.getBean(SendMessageEventServiceImpl.class);
-        messageEventService.handler(client, request, message);
+        sendMessageEventServiceImpl.handler(client, request, message);
     }
 
     /**
@@ -80,6 +74,7 @@ public class MessageEventHandler {
     @OnEvent(value = "optMessage")
     public void onOptMessageEvent(SocketIOClient client, AckRequest request, OptMessage optMessage) {
         LOGGER.info("操作消息开始");
+
     }
 
     /**

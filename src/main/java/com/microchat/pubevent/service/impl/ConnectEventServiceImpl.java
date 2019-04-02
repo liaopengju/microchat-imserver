@@ -3,6 +3,7 @@ package com.microchat.pubevent.service.impl;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.SocketIONamespace;
 import com.microchat.client.service.ClientService;
 import com.microchat.client.utils.NettyClients;
 import com.microchat.commons.redis.utils.RedisPubSubUtil;
@@ -40,6 +41,9 @@ public class ConnectEventServiceImpl implements MessageEventService {
     private RedisTemplate redisTemplate;
     @Autowired
     private ClientService clientServiceImpl;
+
+    @Autowired
+    private SocketIONamespace messageSocketNameSpace;
 
     @Override
     public void handler(SocketIOClient client, AckRequest ackRequest, Object object) {
